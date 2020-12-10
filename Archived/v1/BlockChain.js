@@ -6,12 +6,11 @@ class BlockChain
     {
         this.chain = [this.createGenesisBlock()];
         this.difficulty = difficulty;
-        this.pendingTransactions = [];
     }
 
     createGenesisBlock()
     {
-        return new Block("01/01/2021", "Genesis block", "0");
+        return new Block(0, "01/01/2021", "Genesis block", "0");
     }
 
     getLatestBlock()

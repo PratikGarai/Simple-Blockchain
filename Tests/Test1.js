@@ -1,3 +1,5 @@
+// To be used with v1 archived codes
+
 const Block = require('../Block');
 const BlockChain = require('../BlockChain');
 
