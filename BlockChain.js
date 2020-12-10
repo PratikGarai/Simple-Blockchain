@@ -32,8 +32,14 @@ class BlockChain
         ];
     }
 
-    createTransaction(transaction)
+    addTransaction(transaction)
     {
+        if(!transaction.fromAddress || !transaction.toAddress)
+            throw new Error("Transaction must include a from and to address.");
+        
+        if(!transaction.isValid())
+            throw new Error("Transaction is invalid, cannot add it to the blockchain");
+        
         this.pendingTransactions.push(transaction);
     }
 
@@ -67,6 +73,9 @@ class BlockChain
 
             if(currentBlock.previousHash !== prevBlock.hash)
                 return { result : false , block_index : i-1, block : prevBlock, error : "Hash not matching successor" };
+            
+            if(!currentBlock.hasValidTransaction())
+            return { result : false , block_index : i, block : currentBlock, error : "Transaction in block invalid" };
         }
         return { result : true };
     }

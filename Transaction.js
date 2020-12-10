@@ -1,4 +1,6 @@
 const SHA256 = require('crypto-js/sha256');
+const EC = require('elliptic').ec;
+const ec = new EC('secp256k1');
 
 class Transaction
 {
@@ -16,7 +18,9 @@ class Transaction
 
     signTransaction(signingKey)
     {
-        if(signingKey.getPublic('hex') !== this.fromAddress)
+        //console.log(signingKey.getPublic('hex'));
+        //console.log(this.fromAddress);
+        if(signingKey.getPublic('hex') != this.fromAddress)
             throw new Error('You cannot use this wallet');
 
         const hashtx = this.calculateHash();
@@ -29,6 +33,11 @@ class Transaction
         if(this.fromAddress===null) 
             return true;
         
+        if(!this.signature || this.signature.length===0)
+            throw new Error("Transaction not signed");
+        
+        const pub = ec.keyFromPublic(this.fromAddress, 'hex');
+        return pub.verify(this.calculateHash(), this.signature);
     }
 }
 

@@ -25,6 +25,17 @@ class Block
         }
         console.log("Block mined!");
     }
+
+    hasValidTransaction()
+    {
+        for(let trans of this.transactions)
+        {
+            if(!trans.isValid())
+                return false;
+        }
+
+        return true;
+    }
 }
 
 module.exports =  Block;
