@@ -74,4 +74,5 @@ class Test1
     }
 }
 
-module.exports  = Test1;
+let testObject = new Test1(4);
+testObject.conduct();

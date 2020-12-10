@@ -1,12 +1,14 @@
 const Block = require('./Block');
+const Transaction = require('./Transaction');
 
 class BlockChain
 {
-    constructor(difficulty)
+    constructor(difficulty, reward)
     {
         this.chain = [this.createGenesisBlock()];
         this.difficulty = difficulty;
         this.pendingTransactions = [];
+        this.miningReward = reward;
     }
 
     createGenesisBlock()
@@ -19,12 +21,38 @@ class BlockChain
         return this.chain[this.chain.length-1];
     }
 
-    addBlock(newBlock)
+    minePendingTransactions(miningRewardAddress)
     {
-        newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock.calculateHash();
-        newBlock.mineBlock(this.difficulty);
-        this.chain.push(newBlock);
+        let block = new Block(Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
+        block.mineBlock(this.difficulty);
+
+        this.chain.push(block);
+        this.pendingTransactions = [
+            new Transaction(null, miningRewardAddress, this.miningReward)
+        ];
+    }
+
+    createTransaction(transaction)
+    {
+        this.pendingTransactions.push(transaction);
+    }
+
+    getBalanceOf(address)
+    {
+        let balance = 0;
+        for(const block of this.chain)
+        {
+            for(const trans of block.transactions)
+            {
+                //console.log(address + " " + trans.fromAddress + " " + trans.toAddress);
+                if(trans.fromAddress===address)
+                    balance -= trans.amount;
+                if(trans.toAddress===address)
+                    balance += trans.amount;
+            }
+        }
+
+        return balance;
     }
 
     isChainValid()
@@ -41,6 +69,11 @@ class BlockChain
                 return { result : false , block_index : i-1, block : prevBlock, error : "Hash not matching successor" };
         }
         return { result : true };
+    }
+
+    printChain()
+    {
+        console.log(JSON.stringify(this, null, 4));
     }
 }
 
