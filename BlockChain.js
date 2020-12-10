@@ -32,10 +32,10 @@ class BlockChain
             const prevBlock = this.chain[i-1];
             
             if(currentBlock.hash !== currentBlock.calculateHash())
-                return { result : false , block_index : i, block : currentBlock };
+                return { result : false , block_index : i, block : currentBlock, error : "Self hash invalid" };
 
             if(currentBlock.previousHash !== prevBlock.hash)
-                return { result : false , block_index : i, block : currentBlock };
+                return { result : false , block_index : i-1, block : prevBlock, error : "Hash not matching successor" };
         }
         return { result : true };
     }

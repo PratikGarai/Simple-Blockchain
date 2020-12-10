@@ -25,7 +25,7 @@ function integrityPrinter(result)
     }
     else
     {
-        console.log("Result : Invalid Blockchain");
+        console.log("Result : Invalid Blockchain -> "+result.error);
         console.log("Defective block index : "+result.block_index);
         console.log("Block");
         console.log(result.block);
@@ -35,6 +35,12 @@ function integrityPrinter(result)
 let result = Coin.isChainValid();
 integrityPrinter(result);
 Coin.chain[2].data = { amount : 500 };
+
 console.log("\n---- Changing block 2 ----\n");
+result = Coin.isChainValid();
+integrityPrinter(result);
+
+console.log("\n---- Trying again after recalculating hash ----\n");
+Coin.chain[2].hash = Coin.chain[2].calculateHash();
 result = Coin.isChainValid();
 integrityPrinter(result);
