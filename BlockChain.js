@@ -23,6 +23,22 @@ class BlockChain
         newBlock.hash = newBlock.calculateHash();
         this.chain.push(newBlock);
     }
+
+    isChainValid()
+    {
+        for( let i = 1; i<this.chain.length; i++)
+        {
+            const currentBlock = this.chain[i];
+            const prevBlock = this.chain[i-1];
+            
+            if(currentBlock.hash !== currentBlock.calculateHash())
+                return { result : false , block_index : i, block : currentBlock };
+
+            if(currentBlock.previousHash !== prevBlock.hash)
+                return { result : false , block_index : i, block : currentBlock };
+        }
+        return { result : true };
+    }
 }
 
-export default BlockChain;
+module.exports = BlockChain;
