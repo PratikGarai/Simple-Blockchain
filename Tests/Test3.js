@@ -1,3 +1,5 @@
+// To be used with v3 archived codes
+
 const Block = require('../Block');
 const BlockChain = require('../BlockChain');
 const Transaction = require('../Transaction');
