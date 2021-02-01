@@ -5,11 +5,13 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
+import { ViewerComponent } from './viewer/viewer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    ViewerComponent
   ],
   imports: [
     BrowserModule,
